@@ -140,7 +140,6 @@ main {
     padding-block: 5px;
     cursor: pointer;
     border-radius: 0.3rem;
-    outline: none;
     border: 0;
     background-color: var(--green-900);
     color: var(--white);

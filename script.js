@@ -40,13 +40,20 @@ function calculateTheTip() {
     };
 
     if (tipPercent === '0') {
+        errorMessages.push('Tip is empty');
         tipErrorMessage.classList.add('main-calculator-input-inner-error-active');
     } else {
         tipErrorMessage.classList.remove('main-calculator-input-inner-error-active');
     };
 
     if (errorMessages.length === 0) {
+        const totalTip = Number(billInput.value) * parseFloat(tipPercent + 'e-2');
+        const tipPerPerson = totalTip / Number(numberOfPeopleInput.value);
+        const totalPerPerson = (Number(billInput.value) + totalTip) / Number(numberOfPeopleInput.value);
 
+        tipAmountText.textContent = `$${tipPerPerson}`;
+        totalText.textContent = `$${totalPerPerson}`;
+        resetButton.disabled = false;
     };
 };
 
@@ -70,6 +77,27 @@ function customTip() {
     tipPercent = customTipInput.value;
 };
 
-// INITIALIZING THE FORM
+// RESETTING THE CALCULATOR
+
+function resettingTheCalculator() {
+    billErrorMessage.classList.remove('main-calculator-input-inner-error-active');
+    billInput.parentNode.classList.remove('main-calculator-input-inner-container-error');
+    peopleErrorMessage.classList.remove('main-calculator-input-inner-error-active');
+    numberOfPeopleInput.parentNode.classList.remove('main-calculator-input-inner-container-error');
+    tipErrorMessage.classList.remove('main-calculator-input-inner-error-active');
+    billInput.value = '';
+    numberOfPeopleInput.value = '';
+    customTipInput.value = '';
+    tipPercent = '0';
+    for (const tipButton of tipButtons) {
+        tipButton.classList.remove('main-calculator-input-tip-container-button-active');
+    };
+    resetButton.disabled = true;
+    tipAmountText.textContent = '$0.00';
+    totalText.textContent = '$0.00';
+};
+
+// INITIALIZING THE BUTTONS
+resetButton.addEventListener('click', resettingTheCalculator);
 customTipInput.addEventListener('input', customTip);
 window.addEventListener('keypress', e => e.key === 'Enter' ? calculateTheTip() : '');
